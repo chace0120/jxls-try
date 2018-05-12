@@ -69,4 +69,62 @@ public class DemoTest {
             JxlsHelper.getInstance().processGridTemplate(is, os, context, "arrivalDate,holiday,hhhPrice,hihhPrice");
         }
     }
+
+    @Test
+    public void testScheduleConfig() throws IOException {
+        try (InputStream is = DemoTest.class.getResourceAsStream("schedule-config-tmpl.xlsx");
+             OutputStream os = new FileOutputStream("target/schedule-config-tmpl.xlsx")) {
+            Context context = new Context();
+            List<String> weekDays = new ArrayList<>();
+            weekDays.add("Fri");
+            weekDays.add("Sat");
+            weekDays.add("Sun");
+            weekDays.add("Mon");
+            weekDays.add("Tus");
+            weekDays.add("Wed");
+            weekDays.add("Thu");
+            context.putVar("weekDays", weekDays);
+
+            List<String> dates = new ArrayList<>();
+            dates.add("05/05");
+            dates.add("05/06");
+            dates.add("05/07");
+            dates.add("05/08");
+            dates.add("05/09");
+            dates.add("05/10");
+            dates.add("05/11");
+            context.putVar("dates", dates);
+
+            List<Map<String, Object>> configs = new ArrayList<>();
+            Map<String, Object> config = new HashMap<>();
+            config.put("item", "foreacast on the book");
+            List<String> datas = new ArrayList<>();
+            datas.add("50%");
+            datas.add("25%");
+            datas.add("35%");
+            datas.add("45%");
+            datas.add("56%");
+            datas.add("70%");
+            datas.add("78%");
+            config.put("datas", datas);
+            configs.add(config);
+
+            config = new HashMap<>();
+            config.put("item", "Actual on the book");
+            datas = new ArrayList<>();
+            datas.add("50%");
+            datas.add("25%");
+            datas.add("35%");
+            datas.add("45%");
+            datas.add("56%");
+            datas.add("70%");
+            datas.add("78%");
+            config.put("datas", datas);
+            configs.add(config);
+
+            context.putVar("configs", configs);
+
+            JxlsHelper.getInstance().processTemplate(is, os, context);
+        }
+    }
 }
